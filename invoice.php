@@ -9,12 +9,14 @@ $connection    = mysqli_connect($host, $user, $pass, $db, $port);
 if (!$connection) { //cek koneksi
     die("Cannot Connect to Database");
 }
-$C_Name      = "";
-$C_DOB       = "";
-$C_Address   = "";
-$C_Sex       = "";
-$C_Telp      = "";
-$timestamp = date('Y-m-d H:i:s');
+$I_OrderDate    = "";
+$I_EndDate      = "";
+$I_Pickup       = "";
+$I_Quantity     = "";
+$I_Status       = "";
+// $I_ShelfCode    = "";
+$timestamp   = date('Y-m-d H:i:s');
+$random      = rand(001, 999);
 $success     = "";
 $error       = "";
 
@@ -49,16 +51,20 @@ $op = '';
 //         $error = "Cannot find the data!";
 //     }
 // }
+
 if (isset($_POST['simpan'])) { //untuk create
     // $simpan       = $_POST['simpan'];
-    $C_Name       = $_POST['C_Name'];
-    $C_Sex        = $_POST['C_Sex'];
-    $C_DOB        = $_POST['C_DOB'];
-    $C_Address    = $_POST['C_Address'];
-    $C_Telp       = $_POST['C_Telp'];
-
-    if ($C_Name && $C_Sex && $C_DOB && $C_Address && $C_Telp) {
-        $sql1   = "INSERT INTO Customers(C_Name,C_Sex,C_DOB,C_Address,C_Telp, C_RegistrationDate) VALUE ('$C_Name','$C_Sex','$C_DOB','$C_Address','$C_Telp', '$timestamp');";
+    $I_OrderDate    = $_POST['I_OrderDate'];
+    $I_EndDate      = $_POST['I_EndDate'];
+    $I_Pickup       = $_POST['I_Pickup'];
+    $I_Quantity     = $_POST['I_Quantity'];
+    $I_Status       = $_POST['I_Status'];
+    // $I_ShelfCode    = $_POsST['I_ShelfCode'];
+    if ($I_OrderDate && $I_EndDate && $I_Pickup && $I_Quantity && $I_Status) {
+        // die("Yes");
+        $sql1   = "INSERT INTO Invoice(I_OrderDate,I_EndDate,I_Pickup,I_Quantity,I_Status, I_ShelfCode) VALUE ('$I_OrderDate','$I_EndDate','$I_Pickup','$I_Quantity','$I_Status', '$random');";
+        // $sql2   = "SELECT SUM ";
+        // die($sql1);
         $q1     = mysqli_query($connection, $sql1);
         if ($q1) {
             $sukses     = "Success Inserted Data!";
@@ -96,12 +102,12 @@ if (isset($_POST['simpan'])) { //untuk create
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
+  <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" href="index.php">Customers </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="payment.php">Payment</a>
+        <a class="nav-link" href="#">Employee</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="invoice.php">Invoice</a>
@@ -116,7 +122,7 @@ if (isset($_POST['simpan'])) { //untuk create
         <!-- untuk memasukkan data -->
         <div class="card">
             <div class="card-header">
-                Create Data Customers
+                Create Invoice
             </div>
             <div class="card-body">
                 <?php
@@ -141,98 +147,60 @@ if (isset($_POST['simpan'])) { //untuk create
                 ?>
                 <form action="" method="POST">
                     <div class="mb-3 row">
-                        <label for="C_Name" class="col-sm-2 col-form-label">Name</label>
+                        <label for="C_Name" class="col-sm-2 col-form-label">Order Date</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="C_Name" name="C_Name" value="<?php echo $C_Name ?>">
+                            <input type="date" class="form-control" id="I_OrderDate" name="I_OrderDate" value="<?php echo $I_OrderDate ?>">
                         </div>
                     </div>
+                    
                     <div class="mb-3 row">
-                        <label for="C_Sex" class="col-sm-2 col-form-label">Sex</label>
+                        <label for="C_Name" class="col-sm-2 col-form-label">End Date</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="C_Sex" id="C_Sex">
-                                <option value="">- Gender -</option>
-                                <option value="M" <?php if ($C_Sex == "M") echo "selected" ?>>Male</option>
-                                <option value="F" <?php if ($C_Sex == "F") echo "selected" ?>>Female</option>
-                            </select>
+                            <input type="date" class="form-control" id="I_EndDate" name="I_EndDate" value="<?php echo $I_EndDate ?>">
                         </div>
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="nama" class="col-sm-2 col-form-label">DOB</label>
+                        <label for="C_Name" class="col-sm-2 col-form-label">Pickup</label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" id="C_DOB" name="C_DOB" value="<?php echo $C_DOB ?>">
+                            <input type="date" class="form-control" id="I_Pickup" name="I_Pickup" value="<?php echo $I_Pickup ?>">
                         </div>
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="alamat" class="col-sm-2 col-form-label">Address</label>
+                        <label for="C_Name" class="col-sm-2 col-form-label">Quantity</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="C_Address" name="C_Address" value="<?php echo $C_Address ?>">
+                            <input type="text" class="form-control" id="I_Quantity" name="I_Quantity" value="<?php echo $I_Quantity ?>">
                         </div>
                     </div>
+
                     <div class="mb-3 row">
-                        <label for="alamat" class="col-sm-2 col-form-label">No. Telp</label>
+                        <label for="C_Name" class="col-sm-2 col-form-label">Status</label>
                         <div class="col-sm-10">
-                            <input type="tel" class="form-control" id="C_Telp" name="C_Telp" value="<?php echo $C_Telp ?>">
+                            <input type="text" class="form-control" id="I_Status" name="I_Status" value="<?php echo $I_Status ?>">
                         </div>
                     </div>
+
+                    <!-- <div class="mb-3 row">
+                        <label for="C_Name" class="col-sm-2 col-form-label">Shelf Code</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="I_ShelfCode" name="I_ShelfCode" value="<?php echo $I_ShelfCode ?>">
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="mb-3 row">
+                        <label for="C_Name" class="col-sm-2 col-form-label">Total Price</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="I_Status" name="I_Status" value="<?php echo $I_Status ?>">
+                        </div>
+                    </div> -->
+
                     <div class="col-12">
                         <input type="submit" name="simpan" value="Input" class="btn btn-primary" />
                     </div>
                 </form>
             </div>
         </div>
-
-        <!-- untuk mengeluarkan data -->
-        <!-- <div class="card">
-            <div class="card-header text-white bg-secondary">
-                Data Mahasiswa
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">NIM</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Alamat</th>
-                            <th scope="col">Fakultas</th>
-                            <th scope="col">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $sql2   = "select * from mahasiswa order by id desc";
-                        $q2     = mysqli_query($koneksi, $sql2);
-                        $urut   = 1;
-                        while ($r2 = mysqli_fetch_array($q2)) {
-                            $id         = $r2['id'];
-                            $nim        = $r2['nim'];
-                            $nama       = $r2['nama'];
-                            $alamat     = $r2['alamat'];
-                            $fakultas   = $r2['fakultas'];
-
-                        ?>
-                            <tr>
-                                <th scope="row"><?php echo $urut++ ?></th>
-                                <td scope="row"><?php echo $nim ?></td>
-                                <td scope="row"><?php echo $nama ?></td>
-                                <td scope="row"><?php echo $alamat ?></td>
-                                <td scope="row"><?php echo $fakultas ?></td>
-                                <td scope="row">
-                                    <a href="index.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-warning">Edit</button></a>
-                                    <a href="index.php?op=delete&id=<?php echo $id?>" onclick="return confirm('Yakin mau delete data?')"><button type="button" class="btn btn-danger">Delete</button></a>            
-                                </td>
-                            </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                    
-                </table>
-            </div>
-        </div>
-    </div> -->
 </body>
 
 </html>
